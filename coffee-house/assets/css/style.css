@@ -1,19 +1,7 @@
 @font-face {
-	font-family: "Inter-Bold";
+	font-family: "Inter";
 	font-style: normal;
-	src: url("../fonts/Inter-Bold.ttf");
-}
-
-@font-face {
-	font-family: "Inter-Regular";
-	font-style: normal;
-	src: url("../fonts/Inter-Regular.ttf");
-}
-
-@font-face {
-	font-family: "Inter-SemiBold";
-	font-style: normal;
-	src: url("../fonts/Inter-SemiBold.ttf");
+	src: url("../fonts/Inter.woff2");
 }
 
 :root {
@@ -40,7 +28,7 @@ html {
 }
 
 body {
-	font-family: "Inter-Regular", sans-serif;
+	font-family: "Inter", sans-serif;
 	color: var(--text-dark);
 	background-color: var(--background-body);
 }
