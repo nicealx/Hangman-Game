@@ -132,6 +132,10 @@
 		display: none;
 	}
 
+	.menu__btn-load--active {
+		display: flex;
+	}
+
 	/* Footer */
 	.footer__wrapper {
 		flex-direction: column;
@@ -188,7 +192,7 @@
 		width: 40px;
 		height: 40px;
 	}
-	
+
 	.header__menu-link--active::after {
 		bottom: -10px;
 	}
