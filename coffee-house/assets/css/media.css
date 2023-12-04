@@ -67,7 +67,7 @@
 	}
 
 	.about__card {
-		width: 50%;
+		width: 660px;
 		background-size: cover;
 	}
 
@@ -178,10 +178,6 @@
 		vertical-align: middle;
 	}
 
-	.about__card {
-		width: 100%;
-	}
-
 	/* Mobile App */
 	.mobile-app__wrapper {
 		flex-direction: column;
@@ -224,7 +220,11 @@
 }
 
 @media screen and (max-width: 768px) {
+	.enjoy__wrapper {
+		background-size: cover;
+	}
 	.about__card {
+		width: 100%;
 		background-size: 105%;
 	}
 
@@ -233,7 +233,7 @@
 	}
 }
 
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 660px) {
 	h1 {
 		font-size: 42px;
 		line-height: 115%;
@@ -246,7 +246,6 @@
 	.container {
 		padding: 0 16px;
 	}
-
 	.enjoy__wrapper {
 		padding: 60px 16px;
 		background-size: cover;
@@ -302,5 +301,12 @@
 @media screen and (max-width: 380px) {
 	.about__card {
 		background-size: 210%;
+	}
+}
+
+@media screen and (max-width: 370px) {
+	.about__card {
+		height: calc(100vh / 2);
+		background-size: cover;
 	}
 }
