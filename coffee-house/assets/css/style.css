@@ -577,7 +577,7 @@ section {
 }
 
 .menu__btn-load--active {
-	display: flex;
+	display: none;
 }
 
 /* Footer */
