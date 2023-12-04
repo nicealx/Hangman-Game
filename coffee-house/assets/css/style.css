@@ -134,11 +134,11 @@ section {
 
 /* Header */
 .header {
+	position: relative;
 	margin: 20px 0;
 }
 
 .header__wrapper {
-	position: relative;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -157,7 +157,7 @@ section {
 .header__menu {
 	display: flex;
 	justify-content: space-between;
-	width: 100%;
+	flex-grow: 1;
 }
 
 .header__menu-list {
@@ -177,6 +177,10 @@ section {
 	position: relative;
 	color: var(--text-dark);
 	padding-bottom: 4px;
+}
+
+.header__menu-link svg {
+	margin-left: 5px;
 }
 
 .header__menu-link::after {
