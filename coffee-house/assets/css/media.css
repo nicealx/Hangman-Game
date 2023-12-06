@@ -308,6 +308,10 @@
 	.about__card {
 		background-size: 210%;
 	}
+
+	.slider__nav {
+		display: none;
+	}
 }
 
 @media screen and (max-width: 370px) {
