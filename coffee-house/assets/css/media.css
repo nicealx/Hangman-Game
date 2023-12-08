@@ -126,8 +126,8 @@
 
 @media screen and (max-width: 768px) {
 	.header__menu {
-		position: absolute;
-		top: 80px;
+		position: fixed;
+		top: 100px;
 		left: 0;
 		height: calc(100vh - 100px);
 		flex-direction: column;
@@ -138,14 +138,14 @@
 		width: 100%;
 		background-color: var(--background-body);
 		opacity: 0;
-		visibility: hidden;
 		z-index: 2;
-		transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+		transform: translateX(100vw);
+		transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
 	}
 
 	.header__menu--open {
 		opacity: 1;
-		visibility: visible;
+		transform: translateX(0);
 	}
 
 	.header__menu-list {
@@ -307,6 +307,10 @@
 @media screen and (max-width: 380px) {
 	.about__card {
 		background-size: 210%;
+	}
+
+	.slider__nav {
+		display: none;
 	}
 }
 
