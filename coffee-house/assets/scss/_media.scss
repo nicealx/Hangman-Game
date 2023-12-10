@@ -16,8 +16,10 @@
 		background: $background-container;
 	}
 
-	.slider__button:hover path {
-		stroke: $text-light;
+	.slider__button {
+		&:hover path {
+			stroke: $text-light;
+		}
 	}
 
 	.about__card:hover {
@@ -387,6 +389,14 @@
 			&-wrapper {
 				display: none;
 			}
+		}
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.slider {
+		&__items {
+			gap: 100px;
 		}
 	}
 }
