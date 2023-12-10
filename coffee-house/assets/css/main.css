@@ -1250,6 +1250,9 @@ section {
   .enjoy__link-icon svg {
     vertical-align: top;
   }
+  .slider__nav {
+    display: none;
+  }
   .about__card {
     background-size: cover;
   }
@@ -1298,9 +1301,6 @@ section {
 @media screen and (max-width: 380px) {
   .about__card {
     background-size: 210%;
-  }
-  .slider__nav {
-    display: none;
   }
 }
 @media screen and (max-width: 370px) {
