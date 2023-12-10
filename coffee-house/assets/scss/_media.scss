@@ -334,6 +334,12 @@
 		}
 	}
 
+	.slider {
+		&__nav {
+			display: none;
+		}
+	}
+
 	.about {
 		&__card {
 			background-size: cover;
@@ -405,12 +411,6 @@
 	.about {
 		&__card {
 			background-size: 210%;
-		}
-	}
-
-	.slider {
-		&__nav {
-			display: none;
 		}
 	}
 }
