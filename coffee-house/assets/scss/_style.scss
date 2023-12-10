@@ -105,7 +105,7 @@ section {
 /* Header */
 .header {
 	position: relative;
-	margin: 20px 0;
+	padding: 20px 0;
 
 	&__wrapper {
 		display: flex;
@@ -259,16 +259,23 @@ section {
 	position: relative;
 
 	&__container {
-		margin-bottom: 40px;
+		max-width: 480px;
+		margin: 0 auto 40px auto;
+		overflow: hidden;
 	}
 
 	&__items {
-		max-width: 480px;
-		margin: 0 auto;
+		display: flex;
+		gap: 200px;
+		transition: transform 0.5s ease-in-out;
 	}
 
 	&__item {
+		max-width: 480px;
+		width: 100%;
+		flex-shrink: 0;
 		text-align: center;
+		user-select: none;
 
 		&-img {
 			margin-bottom: 20px;
@@ -312,7 +319,17 @@ section {
 		border-radius: 100%;
 		border: 1px solid $border-dark;
 		cursor: pointer;
-		transition: background 0.5s ease-out;
+		transition: background 0.5s ease-out, border 0.5s ease-out;
+
+		&:disabled {
+			path {
+				stroke: lighten($text-dark, 40%);
+			}
+
+			border-color: lighten($text-dark, 40%);
+			user-select: none;
+			pointer-events: none;
+		}
 
 		path {
 			transition: stroke 0.5s ease-out;
@@ -327,15 +344,23 @@ section {
 	}
 
 	&__bullet {
+		position: relative;
 		width: 40px;
 		height: 4px;
 		background: $border-light;
 		border: none;
 		border-radius: 100px;
 		transition: background 0.5s;
+		overflow: hidden;
 
-		&--current {
+		&-progress {
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 4px;
+			width: 0;
 			background: $border-dark;
+			transition: width 0.6s ease-in-out;
 		}
 	}
 }
@@ -482,6 +507,7 @@ section {
 		cursor: pointer;
 
 		&-img {
+			height: 310px;
 			border-radius: 40px;
 			overflow: hidden;
 
@@ -544,7 +570,7 @@ section {
 	display: flex;
 	justify-content: center;
 	gap: 16px;
-	margin-bottom: 40px;
+	margin-bottom: 38px;
 
 	&__item {
 		display: flex;
