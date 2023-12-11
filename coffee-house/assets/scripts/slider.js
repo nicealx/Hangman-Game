@@ -5,8 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sliderNav = slider.querySelector(".slider__nav");
   const sliderBulletsList = slider.querySelectorAll(".slider__bullet");
 
-  const delay = 500;
-  const delayInterval = 5000;
+  const delayInterval = 500;
   const lengthSwipe = 100;
 
   let sliderWidth = sliderItemsWrapper.scrollWidth;
@@ -14,12 +13,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentSlide = 0;
   let sliderIndex = 0;
   let stepBullet = 0;
+  let counter = 0;
   let gap = parseFloat(getComputedStyle(sliderItemsWrapper).gap);
   let lastWindowWidth = window.innerWidth;
   let sliderInterval;
   let bulletsProgressInterval;
-  let touchX = null;
-  let moveX = null;
+  let startTouch = null;
+  let endTouch = null;
   let swipeX = null;
 
   function initSlider() {
@@ -40,11 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function prevSlide() {
+      counter = 0;
       stepBullet = 0;
-      this.disabled = true;
-      setTimeout(() => {
-        this.disabled = false;
-      }, delay);
       if (currentSlide < 0 && currentSlide !== 0) {
         currentSlide += slideWidth + gap;
       } else {
@@ -61,11 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function nextSlide() {
+      counter = 0;
       stepBullet = 0;
-      this.disabled = true;
-      setTimeout(() => {
-        this.disabled = false;
-      }, delay);
       if (currentSlide > -sliderWidth + slideWidth) {
         currentSlide -= slideWidth + gap;
       } else {
@@ -91,12 +85,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startSliderInterval() {
+      clearSliderInterval();
       sliderInterval = setInterval(() => {
-        nextSlide();
+        counter += 10;
+        if (counter >= 100) {
+          nextSlide();
+        }
       }, delayInterval);
       bulletsProgressInterval = setInterval(() => {
         bulletsProgress();
-      }, delayInterval / 10);
+      }, delayInterval);
     }
 
     function clearSliderInterval() {
@@ -105,32 +103,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function sliderListener(event) {
-      event.addEventListener("mouseover", () => {
-        clearSliderInterval();
-      });
-      event.addEventListener("mouseout", () => {
-        startSliderInterval();
-      });
+      event.addEventListener("mouseenter", clearSliderInterval);
+
+      event.addEventListener("mouseleave", startSliderInterval);
 
       event.addEventListener("touchstart", (e) => {
-        if (e.target.closest(".slider__item")) {
-          clearSliderInterval();
-          touchX = e.touches[0].clientX;
-        }
+        e.target.addEventListener("contextmenu", (el) => {
+          el.preventDefault();
+        });
+        console.log(e);
+        swipeX = 0;
+        startTouch = e.touches[0].clientX;
+        clearSliderInterval();
       });
+
       event.addEventListener("touchend", () => {
-        startSliderInterval();
         if (swipeX > lengthSwipe) {
           prevSlide();
         } else if (swipeX < -lengthSwipe) {
           nextSlide();
         }
+        startSliderInterval();
       });
 
       event.addEventListener("touchmove", (e) => {
-        if (!touchX) return;
-        moveX = e.touches[0].clientX;
-        swipeX = moveX - touchX;
+        if (!startTouch) return;
+        endTouch = e.touches[0].clientX;
+        swipeX = endTouch - startTouch;
       });
     }
 
@@ -142,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sliderIndex = 0;
         currentSlide = 0;
         stepBullet = 0;
+        counter = 0;
         sliderItemsWrapper.style.transform = `translateX(0px)`;
         sliderBulletsList.forEach((e) => {
           e.children[0].style.width = "0%";
