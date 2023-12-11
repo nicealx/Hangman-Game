@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastWindowWidth = window.innerWidth;
   let sliderInterval;
   let bulletsProgressInterval;
-  let touchX = null;
-  let moveX = null;
+  let startTouch = null;
+  let endTouch = null;
   let swipeX = null;
 
   function initSlider() {
@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startSliderInterval() {
+      clearSliderInterval();
       sliderInterval = setInterval(() => {
         counter += 10;
         if (counter >= 100) {
@@ -102,32 +103,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function sliderListener(event) {
-      event.addEventListener("mouseover", () => {
-        clearSliderInterval();
-      });
-      event.addEventListener("mouseout", () => {
-        startSliderInterval();
-      });
+      event.addEventListener("mouseenter", clearSliderInterval);
+
+      event.addEventListener("mouseleave", startSliderInterval);
 
       event.addEventListener("touchstart", (e) => {
-        if (e.target.closest(".slider__item")) {
-          clearSliderInterval();
-          touchX = e.touches[0].clientX;
-        }
+        e.target.addEventListener("contextmenu", (el) => {
+          el.preventDefault();
+        });
+        console.log(e);
+        swipeX = 0;
+        startTouch = e.touches[0].clientX;
+        clearSliderInterval();
       });
+
       event.addEventListener("touchend", () => {
-        startSliderInterval();
         if (swipeX > lengthSwipe) {
           prevSlide();
         } else if (swipeX < -lengthSwipe) {
           nextSlide();
         }
+        startSliderInterval();
       });
 
       event.addEventListener("touchmove", (e) => {
-        if (!touchX) return;
-        moveX = e.touches[0].clientX;
-        swipeX = moveX - touchX;
+        if (!startTouch) return;
+        endTouch = e.touches[0].clientX;
+        swipeX = endTouch - startTouch;
       });
     }
 
