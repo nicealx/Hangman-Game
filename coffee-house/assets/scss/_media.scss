@@ -233,20 +233,21 @@
 
     span {
       position: relative;
-      width: 16px;
-      height: 1.5px;
+      width: 18px;
+      height: 2px;
       background-color: $text-dark;
       transition: transform 0.3s ease;
+      border-radius: 100px;
     }
 
     &--open {
       gap: 0;
 
       span {
-        transform: rotate(45deg);
+        transform: rotate(45deg) translateY(1px) translateY(-0.5px);
 
         &:last-child {
-          transform: rotate(-45deg);
+          transform: rotate(-45deg) translateX(1px) translateY(-1px);
         }
       }
     }
@@ -364,7 +365,8 @@
 
   .menu {
     &__list {
-      grid-template-columns: repeat(1, 1fr);
+      grid-template-columns: repeat(1, 348px);
+      justify-content: center;
       gap: 40px 12px;
       margin-bottom: 40px;
     }
@@ -413,6 +415,12 @@
       background-size: 210%;
     }
   }
+
+  .menu {
+    &__list {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
 }
 
 @media screen and (max-width: 370px) {
@@ -420,6 +428,18 @@
     &__card {
       height: calc(100vh / 2);
       background-size: cover;
+    }
+  }
+
+  .tabs {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 19px;
+    margin-right: 19px;
+
+    &__item {
+      max-width: 348px;
+      width: 100%;
     }
   }
 }
