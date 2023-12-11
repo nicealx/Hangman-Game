@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const delay = 500;
   const delayInterval = 5000;
+  const lengthSwipe = 100;
 
   let sliderWidth = sliderItemsWrapper.scrollWidth;
   let slideWidth = sliderItemsWrapper.getBoundingClientRect().width;
@@ -17,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastWindowWidth = window.innerWidth;
   let sliderInterval;
   let bulletsProgressInterval;
+  let touchX = null;
+  let moveX = null;
+  let swipeX = null;
 
   function initSlider() {
     function initSliderNav(nav) {
@@ -100,44 +104,35 @@ document.addEventListener("DOMContentLoaded", () => {
       clearInterval(bulletsProgressInterval);
     }
 
-    sliderItemsWrapper.addEventListener("mouseover", () => {
-      clearSliderInterval();
-    });
-    sliderItemsWrapper.addEventListener("mouseout", () => {
-      startSliderInterval();
-    });
-
-    let x1 = null;
-    let y1 = null;
-    let x2 = null;
-    let y2 = null;
-    let xDiff = null;
-    let yDiff = null;
-
-    sliderItemsWrapper.addEventListener("touchstart", (e) => {
-      if (e.target.closest(".slider__item")) {
+    function sliderListener(event) {
+      event.addEventListener("mouseover", () => {
         clearSliderInterval();
-        const touch = e.touches[0];
-        x1 = touch.clientX;
-        y1 = touch.clientY;
-      }
-    });
-    sliderItemsWrapper.addEventListener("touchend", () => {
-      startSliderInterval();
-      if (xDiff > 100) {
-        prevSlide();
-      } else if (xDiff < -100) {
-        nextSlide();
-      }
-    });
+      });
+      event.addEventListener("mouseout", () => {
+        startSliderInterval();
+      });
 
-    sliderItemsWrapper.addEventListener("touchmove", (e) => {
-      if (!x1 || !y1) return;
-      x2 = e.touches[0].clientX;
-      y2 = e.touches[0].clientY;
-      xDiff = x2 - x1;
-      yDiff = y2 - y1;
-    });
+      event.addEventListener("touchstart", (e) => {
+        if (e.target.closest(".slider__item")) {
+          clearSliderInterval();
+          touchX = e.touches[0].clientX;
+        }
+      });
+      event.addEventListener("touchend", () => {
+        startSliderInterval();
+        if (swipeX > lengthSwipe) {
+          prevSlide();
+        } else if (swipeX < -lengthSwipe) {
+          nextSlide();
+        }
+      });
+
+      event.addEventListener("touchmove", (e) => {
+        if (!touchX) return;
+        moveX = e.touches[0].clientX;
+        swipeX = moveX - touchX;
+      });
+    }
 
     window.addEventListener("resize", function () {
       if (window.innerWidth !== lastWindowWidth) {
@@ -158,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     initSliderNav(sliderNav);
+    sliderListener(sliderItemsWrapper);
     startSliderInterval();
   }
 
