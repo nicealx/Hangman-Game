@@ -111,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
         e.target.addEventListener("contextmenu", (el) => {
           el.preventDefault();
         });
-        console.log(e);
         swipeX = 0;
         startTouch = e.touches[0].clientX;
         clearSliderInterval();
