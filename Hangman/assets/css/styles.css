@@ -15,6 +15,7 @@
       -ms-flex-align: center;
           align-items: center;
   background-color: rgba(15, 15, 15, 0.8);
+  padding: 20px;
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -277,7 +278,10 @@
     gap: 20px;
   }
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
+  .app {
+    padding: 30px 10px;
+  }
   .gallows__img {
     width: 200px;
   }
