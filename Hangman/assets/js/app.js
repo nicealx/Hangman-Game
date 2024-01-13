@@ -1,4 +1,13 @@
 const body = document.querySelector(".body");
+const keyboardEN = [
+  81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 65, 83, 68, 70, 71, 72, 74, 75, 76,
+  90, 88, 67, 86, 66, 78, 77,
+];
+
+const keyboardRU = [
+  70, 188, 68, 85, 76, 84, 192, 186, 80, 66, 81, 82, 75, 86, 89, 74, 71, 72, 67,
+  78, 69, 65, 219, 87, 88, 73, 79, 221, 83, 77, 222, 190, 90,
+];
 const ruKeyCodes = {
   81: "й",
   87: "ц",
@@ -49,9 +58,9 @@ const man = [
 function newGame() {
   body.innerHTML = "";
   count = 0;
-  Object.keys(charsList).forEach(key => delete charsList[key]);
+  Object.keys(charsList).forEach((key) => delete charsList[key]);
   createContent();
-};
+}
 
 function handlerKeypress(e) {
   let key = e.key;
@@ -61,24 +70,48 @@ function handlerKeypress(e) {
     counterDynamic = arguments.callee.counterDynamic,
     answerDiv = arguments.callee.answerDiv,
     gallowsDiv = arguments.callee.gallowsDiv;
-  for (let k in ruKeyCodes) {
-    if (ruKeyCodes[k] === key) {
-      keyboardDiv.querySelectorAll("button").forEach((el) => {
-        if (el.value === key.toUpperCase()) {
-          target = el;
-        }
-      });
-      checkAnswer(
-        key.toUpperCase(),
-        answerText,
-        target,
-        keyboardDiv,
-        counterDynamic,
-        answerDiv,
-        gallowsDiv
-      );
-    }
+  if (ruKeyCodes[e.keyCode] === key) {
+    keyboardDiv.querySelectorAll("button").forEach((el) => {
+      if (el.value === key.toUpperCase()) {
+        target = el;
+      }
+    });
+    checkAnswer(
+      key.toUpperCase(),
+      answerText,
+      target,
+      keyboardDiv,
+      counterDynamic,
+      answerDiv,
+      gallowsDiv
+    );
+  } else if (keyboardEN.indexOf(e.keyCode) !== -1) {
+    const notification = createNotification();
+    body.append(notification);
+
+    setTimeout(() => {
+      notification.classList.add("notification--active");
+    }, 100);
+
+    setTimeout(() => {
+      notification.classList.remove("notification--active");
+    }, 3000);
+
+    setTimeout(() => {
+      notification.remove();
+    }, 3500);
   }
+}
+
+function createNotification() {
+  const notificationDiv = document.createElement("div");
+  notificationDiv.className = "notification";
+  const notificationText = document.createElement("p");
+  notificationText.className = "notification__text";
+  notificationText.textContent =
+    "Переключитесь пожалуйста на русскую раскладку. Спасибо!";
+  notificationDiv.append(notificationText);
+  return notificationDiv;
 }
 
 function generateQuestion() {
@@ -129,7 +162,9 @@ function errorInput(
   if (count === countMax) {
     disableKeys(keyboardDiv);
     document.removeEventListener("keypress", handlerKeypress);
-    body.append(createModal(answerText, "Ты проиграл! :(", "modal__button-lose"));
+    body.append(
+      createModal(answerText, "Ты проиграл! :(", "modal__button-lose")
+    );
   }
 
   counterDynamic.textContent = count;
@@ -159,7 +194,7 @@ function checkAnswer(
       if (el === value) {
         chars[i] = el;
         target.disabled = true;
-        target.classList.add("keyboard__button--correct")
+        target.classList.add("keyboard__button--correct");
         check.push(0);
       } else if (charsList[i] === undefined) {
         chars[i] = "_";
@@ -198,15 +233,6 @@ function correctInput(chars, keyboardDiv, answerDiv, answerText) {
 }
 
 function createKeyboard() {
-  const keyboardEN = [
-    81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 65, 83, 68, 70, 71, 72, 74, 75, 76,
-    90, 88, 67, 86, 66, 78, 77,
-  ];
-  const keyboardRU = [
-    70, 188, 68, 85, 76, 84, 192, 186, 80, 66, 81, 82, 75, 86, 89, 74, 71, 72,
-    67, 78, 69, 65, 219, 87, 88, 73, 79, 221, 83, 77, 222, 190, 90,
-  ];
-
   const keys = [];
 
   keyboardRU.forEach((el) => {
@@ -281,7 +307,7 @@ function createContent() {
   const main = document.createElement("main");
   main.className = "app";
   const mainTitle = document.createElement("h1");
-  mainTitle.className = "main__title";
+  mainTitle.className = "title";
   mainTitle.textContent = "Hangman";
 
   const appLeft = document.createElement("section");
@@ -347,7 +373,7 @@ function createContent() {
   handlerKeypress.answerDiv = answerDiv;
   handlerKeypress.gallowsDiv = gallowsDiv;
 
-  document.addEventListener("keypress", handlerKeypress);
+  document.addEventListener("keydown", handlerKeypress);
 
   appLeft.append(gallowsDiv);
   questionDiv.append(questionText);
