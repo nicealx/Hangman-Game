@@ -46,27 +46,39 @@ const man = [
   "leg-right.png",
 ];
 
-function createKeyboard() {
-  const keyboardEN = [
-    81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 65, 83, 68, 70, 71, 72, 74, 75, 76,
-    90, 88, 67, 86, 66, 78, 77,
-  ];
-  const keyboardRU = [
-    70, 188, 68, 85, 76, 84, 192, 186, 80, 66, 81, 82, 75, 86, 89, 74, 71, 72,
-    67, 78, 69, 65, 219, 87, 88, 73, 79, 221, 83, 77, 222, 190, 90,
-  ];
+function newGame() {
+  body.innerHTML = "";
+  count = 0;
+  Object.keys(charsList).forEach(key => delete charsList[key]);
+  createContent();
+};
 
-  const keys = [];
-
-  keyboardRU.forEach((el) => {
-    let button = document.createElement("button");
-    button.className = "keyboard__button";
-    button.value = ruKeyCodes[el].toUpperCase();
-    button.innerText = ruKeyCodes[el].toUpperCase();
-    keys.push(button);
-  });
-
-  return keys;
+function handlerKeypress(e) {
+  let key = e.key;
+  let target = null;
+  const answerText = arguments.callee.answerText,
+    keyboardDiv = arguments.callee.keyboardDiv,
+    counterDynamic = arguments.callee.counterDynamic,
+    answerDiv = arguments.callee.answerDiv,
+    gallowsDiv = arguments.callee.gallowsDiv;
+  for (let k in ruKeyCodes) {
+    if (ruKeyCodes[k] === key) {
+      keyboardDiv.querySelectorAll("button").forEach((el) => {
+        if (el.value === key.toUpperCase()) {
+          target = el;
+        }
+      });
+      checkAnswer(
+        key.toUpperCase(),
+        answerText,
+        target,
+        keyboardDiv,
+        counterDynamic,
+        answerDiv,
+        gallowsDiv
+      );
+    }
+  }
 }
 
 function generateQuestion() {
@@ -85,23 +97,6 @@ function generateQuestion() {
   const random = Math.floor(Math.random() * questions.length);
 
   return [createAnswer(questions[random][1]), questions[random][0]];
-}
-
-function createAnswer(answer) {
-  const answerDiv = document.createElement("div");
-  answerDiv.className = "answer";
-  const answerText = document.createElement("p");
-  answerText.className = "answer__text";
-  answerDiv.append(answerText);
-
-  answer.split("").forEach((el) => {
-    const span = document.createElement("span");
-    span.className = "answer__char";
-    span.textContent = "_";
-    answerText.append(span);
-  });
-
-  return [answerDiv, answer];
 }
 
 function disableKeys(keyboardDiv) {
@@ -138,30 +133,6 @@ function errorInput(
   }
 
   counterDynamic.textContent = count;
-}
-
-function correctInput(chars, keyboardDiv, answerDiv, answerText) {
-  const check = [];
-  Object.assign(charsList, chars);
-  const answer = answerDiv.querySelectorAll(".answer__char");
-  const answerArray = Array.from(answer);
-  const charsListKeys = Object.keys(charsList);
-
-  answerArray.forEach((el, i) => {
-    if (charsListKeys.indexOf(i)) {
-      el.textContent = charsList[i];
-    }
-  });
-
-  charsListKeys.forEach((el) => {
-    if (charsList[el] !== "_") {
-      check.push(0);
-    }
-  });
-
-  if (check.length === answer.length) {
-    checkWin(keyboardDiv, answerText);
-  }
 }
 
 function checkWin(keyboardDiv, answerText) {
@@ -202,6 +173,70 @@ function checkAnswer(
   }
 }
 
+function correctInput(chars, keyboardDiv, answerDiv, answerText) {
+  const check = [];
+  Object.assign(charsList, chars);
+  const answer = answerDiv.querySelectorAll(".answer__char");
+  const answerArray = Array.from(answer);
+  const charsListKeys = Object.keys(charsList);
+
+  answerArray.forEach((el, i) => {
+    if (charsListKeys.indexOf(i)) {
+      el.textContent = charsList[i];
+    }
+  });
+
+  charsListKeys.forEach((el) => {
+    if (charsList[el] !== "_") {
+      check.push(0);
+    }
+  });
+
+  if (check.length === answer.length) {
+    checkWin(keyboardDiv, answerText);
+  }
+}
+
+function createKeyboard() {
+  const keyboardEN = [
+    81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 65, 83, 68, 70, 71, 72, 74, 75, 76,
+    90, 88, 67, 86, 66, 78, 77,
+  ];
+  const keyboardRU = [
+    70, 188, 68, 85, 76, 84, 192, 186, 80, 66, 81, 82, 75, 86, 89, 74, 71, 72,
+    67, 78, 69, 65, 219, 87, 88, 73, 79, 221, 83, 77, 222, 190, 90,
+  ];
+
+  const keys = [];
+
+  keyboardRU.forEach((el) => {
+    let button = document.createElement("button");
+    button.className = "keyboard__button";
+    button.value = ruKeyCodes[el].toUpperCase();
+    button.innerText = ruKeyCodes[el].toUpperCase();
+    keys.push(button);
+  });
+
+  return keys;
+}
+
+function createAnswer(answer) {
+  const answerDiv = document.createElement("div");
+  answerDiv.className = "answer";
+  const answerText = document.createElement("p");
+  answerText.className = "answer__text";
+  answerDiv.append(answerText);
+
+  answer.split("").forEach((el) => {
+    const span = document.createElement("span");
+    span.className = "answer__char";
+    span.textContent = "_";
+    answerText.append(span);
+  });
+
+  return [answerDiv, answer];
+}
+
 function createModal(answerText, titleModal, btnClass) {
   const modalDiv = document.createElement("div");
   modalDiv.className = "modal";
@@ -222,11 +257,10 @@ function createModal(answerText, titleModal, btnClass) {
   const modalButton = document.createElement("button");
   modalButton.className = `modal__button ${btnClass}`;
   modalButton.textContent = "Сыграть ещё";
-  modalButton.onclick = () => location.reload();
+  modalButton.onclick = () => newGame();
 
   modalWrapper.append(modalTitle, modalAnswer, modalButton);
   modalDiv.append(modalWrapper, modalOverlay);
-  // body.style.overflow = "hidden";
   return modalDiv;
 }
 
@@ -241,34 +275,6 @@ function createGallows() {
   gallowsDiv.append(gallowsImg);
 
   return gallowsDiv;
-}
-
-function handlerKeypress(e) {
-  let key = e.key;
-  let target = null;
-  const answerText = arguments.callee.answerText,
-    keyboardDiv = arguments.callee.keyboardDiv,
-    counterDynamic = arguments.callee.counterDynamic,
-    answerDiv = arguments.callee.answerDiv,
-    gallowsDiv = arguments.callee.gallowsDiv;
-  for (let k in ruKeyCodes) {
-    if (ruKeyCodes[k] === key) {
-      keyboardDiv.querySelectorAll("button").forEach((el) => {
-        if (el.value === key.toUpperCase()) {
-          target = el;
-        }
-      });
-      checkAnswer(
-        key.toUpperCase(),
-        answerText,
-        target,
-        keyboardDiv,
-        counterDynamic,
-        answerDiv,
-        gallowsDiv
-      );
-    }
-  }
 }
 
 function createContent() {
