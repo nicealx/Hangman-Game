@@ -5,11 +5,16 @@
   min-height: 100vh;
   justify-content: center;
   align-items: center;
-  
+  background-color: rgba(#0f0f0f, 0.8);
+
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+}
+
+.title {
+  color: #fff;
 }
 
 .app {
@@ -18,6 +23,8 @@
   justify-content: center;
   align-items: center;
   padding: 50px;
+  background-color: #fff;
+  border-radius: 5px;
 
   &__left,
   &__right {
@@ -215,5 +222,21 @@
   &__button:active {
     box-shadow: $box-shadow-active;
     transition: box-shadow 0.3s;
+  }
+}
+
+.notification {
+  position: fixed;
+  right: -500px;
+  bottom: 10px;
+  max-width: 300px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s;
+
+  &--active {
+    right: 10px;
   }
 }

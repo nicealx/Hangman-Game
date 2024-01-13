@@ -14,10 +14,15 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  background-color: rgba(15, 15, 15, 0.8);
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+}
+
+.title {
+  color: #fff;
 }
 
 .app {
@@ -32,6 +37,8 @@
       -ms-flex-align: center;
           align-items: center;
   padding: 50px;
+  background-color: #fff;
+  border-radius: 5px;
 }
 .app__left, .app__right {
   max-width: 600px;
@@ -244,6 +251,23 @@
   transition: -webkit-box-shadow 0.3s;
   transition: box-shadow 0.3s;
   transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
+}
+
+.notification {
+  position: fixed;
+  right: -500px;
+  bottom: 10px;
+  max-width: 300px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+  -webkit-transition: right 0.3s;
+  transition: right 0.3s;
+}
+.notification--active {
+  right: 10px;
 }
 
 @media screen and (max-width: 900px) {
