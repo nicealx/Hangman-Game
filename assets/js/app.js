@@ -1,4 +1,16 @@
 const body = document.querySelector(".body");
+const questions = [
+  ["Кого из птиц называют санитаром леса?", "дятла"],
+  ["Сколько лапок у паука?", "восемь"],
+  ["Какой кот ходит по цепи кругом в сказке Пушкина?", "учёный"],
+  ["Как называют замёрзшую воду?", "лёд"],
+  ["Кто самое медлительное животное?", "ленивец"],
+  ["Сколько цветов в радуге?", "семь"],
+  ["Какая планета самая горячая?", "Венера"],
+  ["За какой нотой идёт «ми»?", "ре"],
+  ["Сколько сторон света есть?", "четыре"],
+  ["С какого месяца начинается лето?", "июнь"],
+];
 const keyboardEN = [
   81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 65, 83, 68, 70, 71, 72, 74, 75, 76,
   90, 88, 67, 86, 66, 78, 77,
@@ -56,6 +68,10 @@ const people = [
 ];
 
 let countNotification = 0;
+
+localStorage.setItem("current", 0);
+let currentQuestion = +localStorage.getItem("current");
+
 
 function newGame(main, modalDiv, bodyTitle) {
   main.remove();
@@ -127,21 +143,16 @@ function createNotification() {
 }
 
 function generateQuestion() {
-  const questions = [
-    ["Кого из птиц называют санитаром леса?", "дятла"],
-    ["Сколько лапок у паука?", "восемь"],
-    ["Какой кот ходит по цепи кругом в сказке Пушкина?", "учёный"],
-    ["Как называют замёрзшую воду?", "лёд"],
-    ["Кто самое медлительное животное?", "ленивец"],
-    ["Сколько цветов в радуге?", "семь"],
-    ["Какая планета самая горячая?", "Венера"],
-    ["За какой нотой идёт «ми»?", "ре"],
-    ["Сколько сторон света есть?", "четыре"],
-    ["С какого месяца начинается лето?", "июнь"],
-  ];
   const random = Math.floor(Math.random() * questions.length);
 
-  return [createAnswer(questions[random][1]), questions[random][0]];
+  if (currentQuestion === random) {
+    return generateQuestion();
+  } else {
+    localStorage.setItem("current", random);
+    currentQuestion = +localStorage.getItem("current");
+    return [createAnswer(questions[random][1]), questions[random][0]];
+  }
+  
 }
 
 function disableKeys(keyboardDiv) {
@@ -446,7 +457,7 @@ function createContent() {
   body.prepend(main);
   body.prepend(bodyTitle);
 
-  console.log(answerText);
+  console.log(answerText.toUpperCase());
 }
 
 createContent();
