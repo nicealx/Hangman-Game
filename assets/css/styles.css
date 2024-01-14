@@ -15,7 +15,6 @@
       -ms-flex-align: center;
           align-items: center;
   background-color: rgba(15, 15, 15, 0.8);
-  padding: 20px;
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -38,6 +37,7 @@
       -ms-flex-align: center;
           align-items: center;
   padding: 50px;
+  margin: 20px;
   background-color: #fff;
   border-radius: 5px;
 }
