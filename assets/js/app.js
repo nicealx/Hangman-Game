@@ -72,7 +72,6 @@ let countNotification = 0;
 localStorage.setItem("current", 0);
 let currentQuestion = +localStorage.getItem("current");
 
-
 function newGame(main, modalDiv, bodyTitle) {
   main.remove();
   modalDiv.remove();
@@ -93,39 +92,41 @@ function handlerKeypress(e) {
     gallowsDiv = arguments.callee.gallowsDiv,
     main = arguments.callee.main;
   bodyTitle = arguments.callee.bodyTitle;
-  if (ruKeyCodes[e.keyCode] === key) {
-    keyboardDiv.querySelectorAll("button").forEach((el) => {
-      if (el.value === key.toUpperCase()) {
-        target = el;
-      }
-    });
-    checkAnswer(
-      key.toUpperCase(),
-      answerText,
-      target,
-      keyboardDiv,
-      counterDynamic,
-      answerDiv,
-      gallowsDiv,
-      main,
-      bodyTitle
-    );
-  } else if (keyboardEN.indexOf(e.keyCode) !== -1) {
-    const notification = createNotification();
-    body.append(notification);
+  if (ruKeyCodes[e.keyCode] !== undefined) {
+    if (ruKeyCodes[e.keyCode].toUpperCase() === key.toUpperCase()) {
+      keyboardDiv.querySelectorAll("button").forEach((el) => {
+        if (el.value === key.toUpperCase()) {
+          target = el;
+        }
+      });
+      checkAnswer(
+        key.toUpperCase(),
+        answerText,
+        target,
+        keyboardDiv,
+        counterDynamic,
+        answerDiv,
+        gallowsDiv,
+        main,
+        bodyTitle
+      );
+    } else if (keyboardEN.indexOf(e.keyCode) !== -1) {
+      const notification = createNotification();
+      body.append(notification);
 
-    setTimeout(() => {
-      notification.classList.add("notification--active");
-    }, 100);
+      setTimeout(() => {
+        notification.classList.add("notification--active");
+      }, 100);
 
-    setTimeout(() => {
-      notification.classList.remove("notification--active");
-    }, 3000);
+      setTimeout(() => {
+        notification.classList.remove("notification--active");
+      }, 3000);
 
-    setTimeout(() => {
-      notification.remove();
-      countNotification--;
-    }, 3500);
+      setTimeout(() => {
+        notification.remove();
+        countNotification--;
+      }, 3500);
+    }
   }
 }
 
@@ -152,7 +153,6 @@ function generateQuestion() {
     currentQuestion = +localStorage.getItem("current");
     return [createAnswer(questions[random][1]), questions[random][0]];
   }
-  
 }
 
 function disableKeys(keyboardDiv) {
@@ -269,7 +269,14 @@ function errorInput(
   counterDynamic.textContent = count;
 }
 
-function correctInput(chars, keyboardDiv, answerDiv, answerText, main, bodyTitle) {
+function correctInput(
+  chars,
+  keyboardDiv,
+  answerDiv,
+  answerText,
+  main,
+  bodyTitle
+) {
   const check = [];
   Object.assign(charsList, chars);
   const answer = answerDiv.querySelectorAll(".answer__char");
