@@ -186,6 +186,10 @@
   transition: box-shadow 0.3s;
   transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
 }
+.keyboard__button--end-game:active {
+  -webkit-box-shadow: 0 3px 0px 1px rgba(46, 1, 1, 0.9);
+          box-shadow: 0 3px 0px 1px rgba(46, 1, 1, 0.9);
+}
 .keyboard__button--error {
   background-color: rgb(255, 81, 81);
   color: rgb(255, 81, 81);
@@ -218,7 +222,7 @@
 }
 
 .modal {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   width: 100%;
@@ -323,13 +327,19 @@
         flex-wrap: wrap;
     gap: 20px;
   }
+  .app__right {
+    gap: 0;
+  }
 }
 @media screen and (max-width: 768px) {
+  .title {
+    margin: 0;
+  }
   .app {
     padding: 30px 10px;
   }
   .gallows__img {
-    max-width: 300px;
+    max-width: 200px;
   }
   .gallows__part-head {
     width: 18%;
@@ -348,7 +358,7 @@
     right: 6%;
   }
   .gallows__part-leg-left {
-    width: 10%;
+    width: 6.5%;
     top: 52.3%;
     right: 22%;
   }
@@ -356,5 +366,21 @@
     width: 10%;
     top: 51.8%;
     right: 10%;
+  }
+  .question__title {
+    font-size: 20px;
+  }
+  .answer__char {
+    font-size: 32px;
+  }
+  .keyboard__button {
+    width: 45px;
+    padding: 10px;
+  }
+  .modal__wrapper {
+    padding: 25px 50px;
+  }
+  .modal__title {
+    font-size: 24px;
   }
 }
