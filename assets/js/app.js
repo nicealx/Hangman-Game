@@ -53,6 +53,7 @@ const ruKeyCodes = {
 };
 const charsList = {};
 let count = 0;
+let errorValue = [];
 const countMax = 6;
 const people = [
   "head.png",
@@ -71,6 +72,7 @@ function newGame(main, modalDiv, bodyTitle) {
   modalDiv.remove();
   bodyTitle.remove();
   count = 0;
+  errorValue = [];
   countNotification = 0;
   Object.keys(charsList).forEach((key) => delete charsList[key]);
   createContent();
@@ -192,6 +194,13 @@ function errorInput(
   main,
   bodyTitle
 ) {
+
+  if(errorValue.indexOf(target.value) === -1) {
+    errorValue.push(target.value);
+  } else {
+    return;
+  }
+
   if (count < countMax) {
     const partImg = document.createElement("img");
     partImg.className = `gallows__part gallows__part-${
