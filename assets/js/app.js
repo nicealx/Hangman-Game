@@ -11,10 +11,6 @@ const questions = [
   ["Сколько сторон света есть?", "четыре"],
   ["С какого месяца начинается лето?", "июнь"],
 ];
-const keyboardEN = [
-  81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 65, 83, 68, 70, 71, 72, 74, 75, 76,
-  90, 88, 67, 86, 66, 78, 77,
-];
 
 const keyboardRU = [
   70, 188, 68, 85, 76, 84, 192, 186, 80, 66, 81, 82, 75, 86, 89, 74, 71, 72, 67,
@@ -67,8 +63,6 @@ const people = [
   "leg-right.png",
 ];
 
-let countNotification = 0;
-
 localStorage.setItem("current", 0);
 let currentQuestion = +localStorage.getItem("current");
 
@@ -83,64 +77,33 @@ function newGame(main, modalDiv, bodyTitle) {
 }
 
 function handlerKeypress(e) {
-  let key = e.key;
+  let key = ruKeyCodes[e.keyCode];
+  if (key === undefined) return;
+  key = key.toUpperCase();
   let target = null;
   const answerText = arguments.callee.answerText,
     keyboardDiv = arguments.callee.keyboardDiv,
     counterDynamic = arguments.callee.counterDynamic,
     answerDiv = arguments.callee.answerDiv,
     gallowsDiv = arguments.callee.gallowsDiv,
-    main = arguments.callee.main;
-  bodyTitle = arguments.callee.bodyTitle;
-  if (ruKeyCodes[e.keyCode] !== undefined) {
-    if (ruKeyCodes[e.keyCode].toUpperCase() === key.toUpperCase()) {
-      keyboardDiv.querySelectorAll("button").forEach((el) => {
-        if (el.value === key.toUpperCase()) {
-          target = el;
-        }
-      });
-      checkAnswer(
-        key.toUpperCase(),
-        answerText,
-        target,
-        keyboardDiv,
-        counterDynamic,
-        answerDiv,
-        gallowsDiv,
-        main,
-        bodyTitle
-      );
-    } else if (keyboardEN.indexOf(e.keyCode) !== -1) {
-      const notification = createNotification();
-      body.append(notification);
-
-      setTimeout(() => {
-        notification.classList.add("notification--active");
-      }, 100);
-
-      setTimeout(() => {
-        notification.classList.remove("notification--active");
-      }, 3000);
-
-      setTimeout(() => {
-        notification.remove();
-        countNotification--;
-      }, 3500);
+    main = arguments.callee.main,
+    bodyTitle = arguments.callee.bodyTitle;
+  keyboardDiv.querySelectorAll("button").forEach((el) => {
+    if (el.value === key) {
+      target = el;
     }
-  }
-}
-
-function createNotification() {
-  const notificationDiv = document.createElement("div");
-  notificationDiv.className = "notification";
-  const notificationText = document.createElement("p");
-  notificationText.className = "notification__text";
-  notificationText.textContent =
-    "Переключитесь пожалуйста на русскую раскладку. Спасибо!";
-  notificationDiv.append(notificationText);
-  notificationDiv.style.bottom = `${10 + countNotification * 100}px`;
-  countNotification++;
-  return notificationDiv;
+  });
+  checkAnswer(
+    key,
+    answerText,
+    target,
+    keyboardDiv,
+    counterDynamic,
+    answerDiv,
+    gallowsDiv,
+    main,
+    bodyTitle
+  );
 }
 
 function generateQuestion() {
