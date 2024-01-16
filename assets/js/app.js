@@ -235,6 +235,7 @@ function errorInput(
       people[count].split(".")[0]
     }`;
     partImg.src = `./assets/img/people/${people[count]}`;
+    partImg.alt = `${people[count].split(".")[0]}`;
     gallowsDiv.append(partImg);
   }
 
@@ -372,6 +373,7 @@ function createGallows() {
   const gallowsImg = document.createElement("img");
   gallowsImg.className = "gallows__img";
   gallowsImg.src = "./assets/img/gallows.png";
+  gallowsImg.alt = "gallows";
 
   gallowsDiv.append(gallowsImg);
 
